@@ -1,0 +1,53 @@
+name: Build Sobuj True AI Forex APK
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "*.zip"
+      - ".github/workflows/build-apk.yml"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: "8.7"
+
+      - name: Extract project ZIP
+        run: |
+          mkdir source
+          ZIP_FILE=$(find . -maxdepth 1 -name "*.zip" | head -n 1)
+          test -n "$ZIP_FILE"
+          unzip -q "$ZIP_FILE" -d source
+
+      - name: Build debug APK
+        run: |
+          PROJECT_DIR=$(find source -type f \( -name "settings.gradle" -o -name "settings.gradle.kts" \) -printf '%h\n' | head -n 1)
+          test -n "$PROJECT_DIR"
+          cd "$PROJECT_DIR"
+          if [ -f gradlew ]; then
+            chmod +x gradlew
+            ./gradlew assembleDebug
+          else
+            gradle assembleDebug
+          fi
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: Sobuj-True-AI-Forex-APK
+          path: source/**/build/outputs/apk/debug/*.apk
+          if-no-files-found: error
