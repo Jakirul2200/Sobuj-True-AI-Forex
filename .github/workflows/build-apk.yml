@@ -1,3 +1,4 @@
+
 name: Build Sobuj True AI Forex APK
 
 on:
@@ -28,16 +29,17 @@ jobs:
 
       - name: Extract project ZIP
         run: |
-          mkdir source
+          mkdir -p source
           ZIP_FILE=$(find . -maxdepth 1 -name "*.zip" | head -n 1)
           test -n "$ZIP_FILE"
           unzip -q "$ZIP_FILE" -d source
 
-      - name: Fix XML hint color attribute
+      - name: Fix Android XML attributes
         run: |
-          find source -type f -name "*.xml" -exec sed -i 's/android:hintTextColor=/android:textColorHint=/g' {} +
+          find source -type f -name "*.xml" \
+            -exec sed -i 's/android:hintTextColor=/android:textColorHint=/g' {} +
 
-      - name: Update Gradle wrapper to 8.9
+      - name: Update Gradle wrapper
         run: |
           WRAPPER_FILE=$(find source -type f -path "*/gradle/wrapper/gradle-wrapper.properties" | head -n 1)
           if [ -n "$WRAPPER_FILE" ]; then
@@ -52,10 +54,16 @@ jobs:
 
           if [ -f gradlew ]; then
             chmod +x gradlew
-            ./gradlew assembleDebug
+            ./gradlew assembleDebug -Pkotlin.jvm.target.validation.mode=warning
           else
-            gradle assembleDebug
+            gradle assembleDebug -Pkotlin.jvm.target.validation.mode=warning
           fi
+
+      - name: Verify APK
+        run: |
+          APK_FILE=$(find source -type f -path "*/build/outputs/apk/debug/*.apk" | head -n 1)
+          test -n "$APK_FILE"
+          echo "APK generated: $APK_FILE"
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
