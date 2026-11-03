@@ -24,7 +24,7 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
         with:
-          gradle-version: "8.7"
+          gradle-version: "8.9"
 
       - name: Extract project ZIP
         run: |
@@ -32,6 +32,13 @@ jobs:
           ZIP_FILE=$(find . -maxdepth 1 -name "*.zip" | head -n 1)
           test -n "$ZIP_FILE"
           unzip -q "$ZIP_FILE" -d source
+
+      - name: Update Gradle wrapper to 8.9
+        run: |
+          WRAPPER_FILE=$(find source -type f -path "*/gradle/wrapper/gradle-wrapper.properties" | head -n 1)
+          if [ -n "$WRAPPER_FILE" ]; then
+            sed -i 's#^distributionUrl=.*#distributionUrl=https\://services.gradle.org/distributions/gradle-8.9-all.zip#' "$WRAPPER_FILE"
+          fi
 
       - name: Build debug APK
         run: |
