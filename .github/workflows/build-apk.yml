@@ -33,6 +33,10 @@ jobs:
           test -n "$ZIP_FILE"
           unzip -q "$ZIP_FILE" -d source
 
+      - name: Fix XML hint color attribute
+        run: |
+          find source -type f -name "*.xml" -exec sed -i 's/android:hintTextColor=/android:textColorHint=/g' {} +
+
       - name: Update Gradle wrapper to 8.9
         run: |
           WRAPPER_FILE=$(find source -type f -path "*/gradle/wrapper/gradle-wrapper.properties" | head -n 1)
@@ -45,6 +49,7 @@ jobs:
           PROJECT_DIR=$(find source -type f \( -name "settings.gradle" -o -name "settings.gradle.kts" \) -printf '%h\n' | head -n 1)
           test -n "$PROJECT_DIR"
           cd "$PROJECT_DIR"
+
           if [ -f gradlew ]; then
             chmod +x gradlew
             ./gradlew assembleDebug
