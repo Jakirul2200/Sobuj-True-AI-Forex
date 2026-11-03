@@ -1,0 +1,30 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="#101820" android:layout_width="match_parent" android:layout_height="match_parent">
+    <LinearLayout android:padding="22dp" android:orientation="vertical"
+        android:layout_width="match_parent" android:layout_height="wrap_content">
+        <TextView android:text="SOBUJ TRUE AI FOREX" android:textColor="#FFFFFF"
+            android:textSize="24sp" android:textStyle="bold" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+        <TextView android:text="1-MINUTE • REAL FOREX • MANUAL QUOTEX"
+            android:textColor="#9FB2C2" android:layout_marginTop="6dp"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+        <EditText android:id="@+id/apiKey" android:hint="Twelve Data API Key (ফোনে দিন)"
+            android:inputType="textPassword" android:textColor="#FFFFFF" android:hintTextColor="#8A9AA8"
+            android:layout_marginTop="22dp" android:backgroundTint="#18B879"
+            android:layout_width="match_parent" android:layout_height="wrap_content"/>
+        <EditText android:id="@+id/symbol" android:hint="Forex Pair (যেমন EUR/USD)"
+            android:text="EUR/USD" android:inputType="textCapCharacters"
+            android:textColor="#FFFFFF" android:hintTextColor="#8A9AA8"
+            android:layout_marginTop="10dp" android:backgroundTint="#18B879"
+            android:layout_width="match_parent" android:layout_height="wrap_content"/>
+        <Button android:id="@+id/testButton" android:text="ANALYZE 1M SIGNAL"
+            android:layout_marginTop="18dp" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+        <TextView android:id="@+id/status" android:text="প্রথমে API Key দিন, তারপর Analyze চাপুন।"
+            android:textColor="#FFFFFF" android:padding="14dp" android:background="#1A2A35"
+            android:layout_marginTop="16dp" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+        <Button android:id="@+id/overlayButton" android:text="Floating Window চালু করুন"
+            android:layout_marginTop="16dp" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+        <TextView android:text="সিগন্যালের জন্য প্রশিক্ষিত model.json লাগবে। মডেল না থাকলে WAIT দেখাবে। 1M candle-এর শেষ ডেটা সবসময় সম্পূর্ণ বন্ধ candle নাও হতে পারে; বাস্তব ট্রেডের আগে closed-candle synchronization ও walk-forward validation আবশ্যক। Confidence score জয়ের নিশ্চয়তা নয়।"
+            android:textColor="#FFC76A" android:layout_marginTop="20dp"
+            android:layout_width="match_parent" android:layout_height="wrap_content"/>
+    </LinearLayout>
+</ScrollView>
